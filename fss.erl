@@ -2,7 +2,7 @@
 -author('kleshney@gmail.com').
 -export([start/0, listen/1]).
 -define(PORTNO, 843).
--define(RESPONSE, "<cross-domain-policy><allow-access-from domain='*' to-ports='*' /></cross-domain-policy>").
+-define(RESPONSE, "<cross-domain-policy><allow-access-from domain='*' to-ports='*' /></cross-domain-policy>\r\n").
 
 start() -> spawn_link(?MODULE, listen, [?PORTNO]).
 
@@ -17,7 +17,7 @@ listen(Port) ->
 loop(ServerSocket) ->
     case gen_tcp:accept(ServerSocket) of
         {ok, Socket} ->
-            gen_tcp:send(Socket, [?RESPONSE] ++ [13, 10]),
+            gen_tcp:send(Socket, [?RESPONSE]),
             gen_tcp:close(Socket),
             loop(ServerSocket);
         _ -> 
